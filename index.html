@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header id="header">
+      <h1 id="dashboard-title">Student Dashboard</h1>
+      <div class="user-info">
+        <span id="greeting"></span>
+        <button id="toggle-mode">Toggle Calm Mode</button>
+      </div>
+      <div id="search-bar-top" class="hidden search-section">
+        <select id="category-dropdown" class="transparent-input">
+          <option value="google">Google</option>
+          <option value="bing">Bing</option>
+          <option value="duckduckgo">DuckDuckGo</option>
+          <option value="yahoo">Yahoo</option>
+        </select>
+        <input type="text" id="search-input" placeholder="search anything..." class="transparent-input">
+        <button id="search-button">Search</button>
+      </div>
+    </header>
+    <div id="dashboard">
+      <nav>
+        <ul>
+          <li><a href="#" data-section="internships">Internships</a></li>
+          <li><a href="#" data-section="competitions">Competitions</a></li>
+          <li><a href="#" data-section="mentors">Mentors</a></li>
+          <li><a href="#" data-section="scholarships">Scholarships</a></li>
+          <li><a href="#" data-section="volunteer">Volunteer</a></li>
+          <li><a href="#" data-section="events">Events</a></li>
+        </ul>
+      </nav>
+      <div class="content">
+        <div class="opportunity-list">
+          <div class="opportunity-names">
+            <ul id="opportunity-names-list">
+              <!-- List of opportunities will be dynamically inserted here -->
+            </ul>
+          </div>
+          <div class="opportunity-details">
+            <div id="opportunity-details-content">
+              <!-- Details of selected opportunity will be displayed here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="calm-mode" class="hidden">
+      <div class="calm-center">
+        <div class="calm-time" id="calm-time"></div>
+        <div class="calm-date" id="calm-date"></div>
+        <div class="todo-list">
+          <p id="main-focus">What is your main focus today?</p>
+          <input type="text" id="new-todo" placeholder="Write here..." class="transparent-input">
+          <ul id="todo-items">
+            <!-- To-Do items will be added here -->
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar">
+      <div class="icon" id="notes-icon">📝</div>
+      <div class="icon" id="background-icon">🖼️</div>
+      <div class="icon" id="weather-icon">☀️</div>
+      <div class="icon" id="bookmark-icon">🔖</div>
+      <div class="icon" id="countdown-icon">📅</div>
+    </div>
+    <div id="notes-popup" class="popup hidden">
+      <div class="popup-header">
+        <span>Quick Notes</span>
+        <button class="close-popup" data-popup="notes-popup">X</button>
+      </div>
+      <textarea id="notes-content" placeholder="Click to edit & add your own notes!"></textarea>
+    </div>
+    <div id="background-popup" class="popup hidden">
+      <div class="popup-header">
+        <span>Change Background</span>
+        <button class="close-popup" data-popup="background-popup">X</button>
+      </div>
+      <div id="background-options">
+        <!-- Add background change options here -->
+      </div>
+    </div>
+    <div id="weather-popup" class="popup hidden">
+      <div class="popup-header">
+        <span>Weather Forecast</span>
+        <button class="close-popup" data-popup="weather-popup">X</button>
+      </div>
+      <div id="weather-content">
+        <!-- Weather forecast content will be displayed here -->
+      </div>
+    </div>
+    <div id="bookmark-popup" class="popup hidden">
+      <div class="popup-header">
+        <span>Bookmarks</span>
+        <button class="close-popup" data-popup="bookmark-popup">X</button>
+      </div>
+      <div id="bookmark-content">
+        <!-- Bookmark content will be displayed here -->
+      </div>
+    </div>
+    <div id="countdown-popup" class="popup hidden">
+      <div class="popup-header">
+        <span>Countdown Days</span>
+        <button class="close-popup" data-popup="countdown-popup">X</button>
+      </div>
+      <div id="countdown-content">
+        <input type="text" id="countdown-title" placeholder="Event Title" class="transparent-input">
+        <input type="date" id="countdown-date" class="transparent-input">
+        <button id="add-countdown">Add Countdown</button>
+        <ul id="countdown-list">
+          <!-- Countdown items will be added here -->
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
