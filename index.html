@@ -3,18 +3,438 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Studont Dashboard</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+  <title>Student Dashboard</title>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Geist+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      transition: background-image 1.5s ease;
+    }
+
+    h1, h2, h3, .section h2, .popup-header span {
+      font-family: 'Geist Sans', sans-serif;
+    }
+
+    .container {
+      width: 90%;
+      margin: auto;
+      padding: 20px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 87, 34, 0.9);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      transition: background 0.5s ease;
+      position: relative;
+    }
+
+    header.calm-mode-header {
+      background: none;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    header h1.hidden {
+      display: none;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+    }
+
+    #toggle-mode {
+      background: #fff;
+      color: #ff5722;
+      border: 1px solid #ff5722;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.3s, color 0.3s;
+      margin-left: 10px;
+    }
+
+    #toggle-mode:hover {
+      background: #ff5722;
+      color: white;
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: space-around;
+      list-style: none;
+      padding: 0;
+      background: rgba(51, 51, 51, 0.9);
+      border-radius: 8px;
+      transition: background 0.5s ease;
+    }
+
+    nav ul li {
+      padding: 10px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    nav ul li a:hover {
+      background: #575757;
+      border-radius: 4px;
+    }
+
+    .search-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    #category-dropdown, #search-input {
+      padding: 10px;
+      margin: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: rgba(255, 255, 255, 0.4);
+      transition: background 0.3s, color 0.3s;
+      color: white;
+    }
+
+    #category-dropdown option {
+      color: black;
+    }
+
+    #search-input::placeholder {
+      color: white;
+    }
+
+    #search-button {
+      padding: 10px;
+      margin: 5px;
+      border-radius: 8px;
+      background: #ff5722;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    #search-button:hover {
+      background: #e64a19;
+    }
+
+    #suggestion-box {
+      background: rgba(255, 255, 255, 0.3);
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      width: calc(100% - 30px);
+      position: absolute;
+      top: calc(100% + 5px);
+      left: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    #suggestion-box div {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    #suggestion-box div:hover {
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .opportunity-list {
+      display: flex;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      overflow: hidden;
+      height: calc(100vh - 150px);
+    }
+
+    .opportunity-names {
+      width: 30%;
+      overflow-y: auto;
+      border-right: 1px solid #ccc;
+    }
+
+    .opportunity-names::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .opportunity-names::-webkit-scrollbar-thumb {
+      background-color: #ccc;
+      border-radius: 4px;
+    }
+
+    .opportunity-names li {
+      padding: 10px;
+      cursor: pointer;
+      border-bottom: 1px solid #eee;
+      transition: background 0.3s;
+    }
+
+    .opportunity-names li:hover {
+      background: #f4f4f4;
+    }
+
+    .opportunity-details {
+      width: 70%;
+      padding: 20px;
+      overflow-y: auto;
+      height: calc(100vh - 150px);
+    }
+
+    .opportunity-details::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .opportunity-details::-webkit-scrollbar-thumb {
+      background-color: #ccc;
+      border-radius: 4px;
+    }
+
+    .section h2 {
+      margin-top: 0;
+    }
+
+    .section p {
+      color: #666;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .calm-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .calm-time {
+      font-size: 48px;
+      text-align: center;
+      margin: 20px 0;
+      opacity: 0;
+      transition: opacity 0.5s ease, color 0.5s ease;
+    }
+
+    .calm-time.visible {
+      opacity: 1;
+    }
+
+    .calm-date {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .todo-list {
+      width: 80%;
+      max-width: 400px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .todo-list.visible {
+      opacity: 1;
+    }
+
+    .todo-list p {
+      text-align: center;
+      color: white;
+    }
+
+    .todo-list ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .todo-list li {
+      background: #fff;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .todo-list li:hover .check-button,
+    .todo-list li:hover .delete-button {
+      display: block;
+    }
+
+    .transparent-input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: rgba(255, 255, 255, 0.4);
+      color: white;
+    }
+
+    .check-button {
+      display: none;
+      position: absolute;
+      left: -30px;
+      background: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .delete-button {
+      display: none;
+      position: absolute;
+      right: -30px;
+      background: #dc3545;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 30px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      border-radius: 0 8px 8px 0;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .icon {
+      margin: 10px 0;
+      padding: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .icon:hover {
+      background: #ddd;
+    }
+
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      z-index: 1000;
+      transition: opacity 0.5s, transform 0.5s;
+    }
+
+    .popup.hidden {
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
+    }
+
+    .popup.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .popup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+
+    .close-popup {
+      background: #ff5722;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background 0.3s;
+    }
+
+    .close-popup:hover {
+      background: #e64a19;
+    }
+
+    textarea {
+      width: 100%;
+      height: 200px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    #countdown-content input, #countdown-content button {
+      margin-top: 10px;
+      display: block;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <header id="header">
-      <h1 id="dashboard-title">Studont Dashboard</h1>
+      <h1 id="dashboard-title">Student Dashboard</h1>
       <div class="user-info">
         <span id="greeting"></span>
         <button id="toggle-mode">Toggle Calm Mode</button>
@@ -125,6 +545,384 @@
       </div>
     </div>
   </div>
-  <script src="script.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const content = document.querySelector('.content');
+      const dashboard = document.getElementById('dashboard');
+      const calmMode = document.getElementById('calm-mode');
+      const toggleModeButton = document.getElementById('toggle-mode');
+      const greeting = document.getElementById('greeting');
+      const header = document.getElementById('header');
+      const dashboardTitle = document.getElementById('dashboard-title');
+      const searchBarTop = document.getElementById('search-bar-top');
+      const calmTime = document.getElementById('calm-time');
+      const mainFocus = document.getElementById('main-focus');
+      const todoItems = document.getElementById('todo-items');
+
+      const sections = {
+        internships: generateOpportunities('Internship'),
+        competitions: generateOpportunities('Competition'),
+        mentors: generateOpportunities('Mentor'),
+        scholarships: generateOpportunities('Scholarship'),
+        volunteer: generateOpportunities('Volunteer'),
+        events: generateOpportunities('Event'),
+        pomodoro: `
+          <div class="pomodoro-timer">
+            <h2>Pomodoro Timer</h2>
+            <div class="timer-display" id="timer">25:00</div>
+            <div class="timer-buttons">
+              <button id="start-timer">Start</button>
+              <button id="stop-timer">Stop</button>
+              <button id="reset-timer">Reset</button>
+            </div>
+          </div>
+        `
+      };
+
+      function generateOpportunities(type) {
+        const opportunities = [];
+        for (let i = 1; i <= 50; i++) {
+          opportunities.push({
+            name: `${type} ${i}`,
+            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque et ipsum at velit aliquet facilisis.'
+          });
+        }
+        return opportunities;
+      }
+
+      function loadSection(section) {
+        const sectionContent = sections[section];
+        if (sectionContent) {
+          const namesContainer = document.querySelector('#opportunity-names-list');
+          const detailsContainer = document.querySelector('#opportunity-details-content');
+          namesContainer.innerHTML = '';
+          detailsContainer.innerHTML = '<h2>Select an opportunity to see details</h2>';
+
+          sectionContent.forEach((item, index) => {
+            const listItem = document.createElement('li');
+            listItem.textContent = item.name;
+            listItem.addEventListener('click', () => {
+              detailsContainer.innerHTML = `<h2>${item.name}</h2><p>${item.description}</p>`;
+            });
+            namesContainer.appendChild(listItem);
+          });
+        }
+      }
+
+      document.querySelectorAll('nav ul li a').forEach(navItem => {
+        navItem.addEventListener('click', function(e) {
+          e.preventDefault();
+          const section = navItem.getAttribute('data-section');
+          loadSection(section);
+        });
+      });
+
+      const searchButton = document.getElementById('search-button');
+      const categoryDropdown = document.getElementById('category-dropdown');
+      const searchInput = document.getElementById('search-input');
+
+      function performSearch() {
+        const category = categoryDropdown.value;
+        const searchQuery = searchInput.value;
+        if (category && searchQuery) {
+          const searchUrls = {
+            google: `https://www.google.com/search?q=${searchQuery}`,
+            bing: `https://www.bing.com/search?q=${searchQuery}`,
+            duckduckgo: `https://duckduckgo.com/?q=${searchQuery}`,
+            yahoo: `https://search.yahoo.com/search?p=${searchQuery}`
+          };
+          const searchUrl = searchUrls[category];
+          window.open(searchUrl, '_blank');
+        } else {
+          alert('Please select a search engine and enter a search term.');
+        }
+      }
+
+      searchButton.addEventListener('click', performSearch);
+      searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          performSearch();
+        }
+      });
+
+      searchInput.addEventListener('input', function() {
+        const searchQuery = searchInput.value;
+        if (searchQuery.length > 0) {
+          fetch(`https://api.datamuse.com/sug?s=${searchQuery}`)
+            .then(response => response.json())
+            .then(data => {
+              const suggestions = data.map(item => item.word);
+              showSuggestions(suggestions);
+            })
+            .catch(error => console.error('Error fetching suggestions:', error));
+        } else {
+          clearSuggestions();
+        }
+      });
+
+      function showSuggestions(suggestions) {
+        const suggestionBox = document.createElement('div');
+        suggestionBox.id = 'suggestion-box';
+        suggestionBox.style.position = 'absolute';
+        suggestionBox.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+        suggestionBox.style.border = '1px solid #ccc';
+        suggestionBox.style.borderRadius = '8px';
+        suggestionBox.style.width = `${searchInput.offsetWidth}px`;
+        suggestionBox.style.top = `${searchInput.offsetTop + searchInput.offsetHeight}px`;
+        suggestionBox.style.left = `${searchInput.offsetLeft}px`;
+        suggestionBox.style.zIndex = '1000';
+        suggestionBox.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+
+        suggestions.forEach(suggestion => {
+          const suggestionItem = document.createElement('div');
+          suggestionItem.textContent = suggestion;
+          suggestionItem.style.padding = '10px';
+          suggestionItem.style.cursor = 'pointer';
+          suggestionItem.addEventListener('click', () => {
+            searchInput.value = suggestion;
+            clearSuggestions();
+            performSearch();
+          });
+          suggestionBox.appendChild(suggestionItem);
+        });
+
+        clearSuggestions();
+        document.body.appendChild(suggestionBox);
+      }
+
+      function clearSuggestions() {
+        const suggestionBox = document.getElementById('suggestion-box');
+        if (suggestionBox) {
+          suggestionBox.remove();
+        }
+      }
+
+      searchInput.addEventListener('blur', clearSuggestions);
+
+      function initPomodoroTimer() {
+        let timer;
+        let timeLeft = 1500; // 25 minutes in seconds
+        const timerDisplay = document.getElementById('timer');
+        const startButton = document.getElementById('start-timer');
+        const stopButton = document.getElementById('stop-timer');
+        const resetButton = document.getElementById('reset-timer');
+
+        function updateDisplay() {
+          const minutes = Math.floor(timeLeft / 60);
+          const seconds = timeLeft % 60;
+          timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+          if (!timer) {
+            timer = setInterval(() => {
+              if (timeLeft > 0) {
+                timeLeft--;
+                updateDisplay();
+              } else {
+                clearInterval(timer);
+                timer = null;
+                alert('Time is up!');
+              }
+            }, 1000);
+          }
+        }
+
+        function stopTimer() {
+          clearInterval(timer);
+          timer = null;
+        }
+
+        function resetTimer() {
+          stopTimer();
+          timeLeft = 1500;
+          updateDisplay();
+        }
+
+        startButton.addEventListener('click', startTimer);
+        stopButton.addEventListener('click', stopTimer);
+        resetButton.addEventListener('click', resetTimer);
+
+        updateDisplay();
+      }
+
+      toggleModeButton.addEventListener('click', function() {
+        if (calmMode.classList.contains('hidden')) {
+          calmMode.classList.remove('hidden');
+          dashboard.classList.add('hidden');
+          header.classList.add('calm-mode-header');
+          dashboardTitle.classList.add('hidden');
+          searchBarTop.classList.remove('hidden');
+          initCalmMode();
+          document.body.style.backgroundImage = "url('https://od.lk/s/NDlfMzQ0Mzc0NzZf/Aurora-Wallpaper-Graphics-79790316-1.jpg')";
+          toggleModeButton.textContent = 'Toggle Opportunity Mode';
+        } else {
+          calmMode.classList.add('hidden');
+          dashboard.classList.remove('hidden');
+          header.classList.remove('calm-mode-header');
+          dashboardTitle.classList.remove('hidden');
+          searchBarTop.classList.add('hidden');
+          document.body.style.backgroundImage = "url('https://od.lk/s/NDlfMzQzOTU3NzZf/the-witcher-3-i64x6dfxkllyw0qp.jpg')";
+          toggleModeButton.textContent = 'Toggle Calm Mode';
+        }
+        document.body.classList.toggle('calm-mode-background');
+      });
+
+      function initCalmMode() {
+        updateCalmTime();
+        updateCalmDate();
+        initTodoList();
+      }
+
+      function updateCalmTime() {
+        calmTime.style.color = 'white';
+        calmTime.classList.add('visible');
+        let is24Hour = false;
+
+        function updateTime() {
+          const now = new Date();
+          const options = { hour: '2-digit', minute: '2-digit' };
+          const timeString = is24Hour ? now.toTimeString().slice(0, 5) : now.toLocaleTimeString([], options);
+          calmTime.textContent = timeString;
+        }
+
+        calmTime.addEventListener('click', function() {
+          is24Hour = !is24Hour;
+          updateTime();
+        });
+
+        updateTime();
+        setInterval(updateTime, 60000);
+      }
+
+      function updateCalmDate() {
+        const calmDate = document.getElementById('calm-date');
+        const now = new Date();
+        const options = { weekday: 'long', month: 'long', day: 'numeric' };
+        calmDate.textContent = now.toLocaleDateString('en-US', options);
+      }
+
+      function initTodoList() {
+        const todoInput = document.getElementById('new-todo');
+        const todoList = document.getElementById('todo-items');
+
+        function addTodo() {
+          const todoText = todoInput.value.trim();
+          if (todoText !== '') {
+            const li = document.createElement('li');
+            li.innerHTML = `<button class="check-button">✔</button>${todoText}<button class="delete-button">✖</button>`;
+            todoList.appendChild(li);
+            todoInput.value = '';
+            li.querySelector('.check-button').addEventListener('click', () => li.classList.toggle('completed'));
+            li.querySelector('.delete-button').addEventListener('click', () => {
+              todoList.removeChild(li);
+              if (todoList.children.length === 0) {
+                mainFocus.classList.remove('hidden');
+              }
+            });
+            mainFocus.classList.add('hidden');
+          }
+        }
+
+        todoInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            addTodo();
+          }
+        });
+
+        document.querySelector('.todo-list').classList.add('visible');
+      }
+
+      const notesIcon = document.getElementById('notes-icon');
+      const backgroundIcon = document.getElementById('background-icon');
+      const weatherIcon = document.getElementById('weather-icon');
+      const bookmarkIcon = document.getElementById('bookmark-icon');
+      const countdownIcon = document.getElementById('countdown-icon');
+
+      notesIcon.addEventListener('click', function() {
+        togglePopup('notes-popup');
+      });
+
+      backgroundIcon.addEventListener('click', function() {
+        togglePopup('background-popup');
+      });
+
+      weatherIcon.addEventListener('click', function() {
+        togglePopup('weather-popup');
+      });
+
+      bookmarkIcon.addEventListener('click', function() {
+        togglePopup('bookmark-popup');
+        loadBookmarks();
+      });
+
+      countdownIcon.addEventListener('click', function() {
+        togglePopup('countdown-popup');
+      });
+
+      document.querySelectorAll('.close-popup').forEach(button => {
+        button.addEventListener('click', function() {
+          const popupId = button.getAttribute('data-popup');
+          document.getElementById(popupId).classList.add('hidden');
+        });
+      });
+
+      function togglePopup(popupId) {
+        const popup = document.getElementById(popupId);
+        popup.classList.toggle('hidden');
+        popup.classList.toggle('visible');
+        $(popup).draggable().resizable();
+      }
+
+      function loadBookmarks() {
+        const bookmarks = [
+          { title: 'Google', url: 'https://www.google.com' },
+          { title: 'Facebook', url: 'https://www.facebook.com' },
+          { title: 'Twitter', url: 'https://www.twitter.com' }
+        ];
+
+        const bookmarkContent = document.getElementById('bookmark-content');
+        bookmarkContent.innerHTML = '';
+
+        bookmarks.forEach(bookmark => {
+          const div = document.createElement('div');
+          div.className = 'bookmark';
+          div.innerHTML = `<a href="${bookmark.url}" target="_blank">${bookmark.title}</a>`;
+          bookmarkContent.appendChild(div);
+        });
+      }
+
+      const countdownList = document.getElementById('countdown-list');
+      const addCountdownButton = document.getElementById('add-countdown');
+      const countdownTitleInput = document.getElementById('countdown-title');
+      const countdownDateInput = document.getElementById('countdown-date');
+
+      addCountdownButton.addEventListener('click', addCountdown);
+
+      function addCountdown() {
+        const title = countdownTitleInput.value.trim();
+        const date = countdownDateInput.value;
+        if (title && date) {
+          const li = document.createElement('li');
+          li.textContent = `${title} - ${calculateDaysLeft(date)}`;
+          countdownList.appendChild(li);
+          countdownTitleInput.value = '';
+          countdownDateInput.value = '';
+        }
+      }
+
+      function calculateDaysLeft(date) {
+        const eventDate = new Date(date);
+        const currentDate = new Date();
+        const timeDiff = eventDate.getTime() - currentDate.getTime();
+        const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        return `D-${daysLeft}`;
+      }
+
+      document.body.style.backgroundImage = "url('')";
+    });
+  </script>
 </body>
 </html>
