@@ -1,0 +1,40 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.container-custom {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+#timer {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+button {
+    margin-right: 10px;
+}
+
+ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+li {
+    margin-bottom: 5px;
+}
+
+#searchInput {
+    width: 200px;
+    padding: 5px;
+    font-size: 16px;
+}
+
+#searchButton {
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
